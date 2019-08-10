@@ -11,37 +11,18 @@ import RealmSwift
 
 class RealmManager {
     
-    let realm = try! Realm()
+    static let sharedInstance = RealmManager()
+    private init() {}
     
+    let realm = try! Realm()
     
     func save<T:Object>(objects: [T]){
         do{
             try realm.write {
                 realm.add(objects)
-                
             }
         } catch {
             print("Error saving data: \(error)")
-        }
-    }
-    
-    
-    
-    func saveObjects<T:Object>(objs: T) {
-        do{
-            try realm.write {
-                realm.add(objs)
-            }
-        } catch {
-            print("Error saving data: \(error)")
-        }
-    }
-    
-    func deleteObject(objs : Object) {
-        do {
-            try? realm.write {
-                realm.delete(objs)
-            }
         }
     }
     

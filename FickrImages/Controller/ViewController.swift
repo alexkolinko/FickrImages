@@ -10,17 +10,16 @@ import UIKit
 import RealmSwift
 
 class ViewController: UIViewController {
-
+    
     @IBOutlet weak var selectPhoto: UIImageView!
     @IBOutlet weak var ratingControl: RatingControl!
     @IBOutlet weak var titleLabel: UILabel!
     
-    let realmManager = RealmManager()
-    
+    let realmManager = RealmManager.sharedInstance
     var titleee: String?
     var rating: Int?
     var photoObject = Title()
-    var selectedImage: URL? {
+    var selectedImage: String? {
         didSet {updateUI()}
     }
     
@@ -30,7 +29,7 @@ class ViewController: UIViewController {
         self.ratingControl.rating = rating!
     }
     
-
+    
     override func viewDidDisappear(_ animated: Bool) {
         try? self.realmManager.realm.write {
             photoObject.rating = ratingControl.rating
@@ -39,11 +38,11 @@ class ViewController: UIViewController {
     }
     
     private func updateUI() {
-        if let url = selectedImage {
+        if let url = URL(string: selectedImage!) {
             DispatchQueue.global(qos: .userInitiated).async {
                 let urlContents = try? Data(contentsOf: url)
                 DispatchQueue.main.async {
-                    if let imageData = urlContents, url == self.selectedImage, let image = UIImage(data: imageData) {
+                    if let imageData = urlContents, let image = UIImage(data: imageData) {
                         if let i = self.selectPhoto {
                             i.image = image
                         } else {

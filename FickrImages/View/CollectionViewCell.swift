@@ -11,19 +11,17 @@ import UIKit
 class CollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var photoView: UIImageView!
-
     
-    var selectedImage: URL? {
+    var selectedImage: String? {
         didSet {updateUI()}
     }
     
-    
     private func updateUI() {
-        if let url = selectedImage {
+        if let url = URL(string: selectedImage!) {
             DispatchQueue.global(qos: .userInitiated).async {
                 let urlContents = try? Data(contentsOf: url)
                 DispatchQueue.main.async {
-                    if let imageData = urlContents, url == self.selectedImage, let image = UIImage(data: imageData) {
+                    if let imageData = urlContents, let image = UIImage(data: imageData) {
                         self.photoView.image = image
                     }
                 }

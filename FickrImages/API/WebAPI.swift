@@ -12,16 +12,12 @@ import RealmSwift
 
 class WebAPI {
     
-    let realmManafer = RealmManager()
-    
-    
+    let realmManager = RealmManager.sharedInstance
+    var photos: Results<Title>!
     static let sharedInstance = WebAPI()
     private init() {}
     
-    //    let queue = DispatchQueue(label: "My queue", qos: .background, attributes: .concurrent)
-    
-    func getAPI(url: String){
-        
+    func getAPI(url: String, completed:@escaping (_ currencys: Results<Title>)->Void){
         guard let testUrl = URL(string: url) else {return}
         AF.request(testUrl).validate().responseData { (response) in
             switch response.result {
@@ -29,9 +25,11 @@ class WebAPI {
                 guard let data = response.data else {return}
                 do{
                     guard let myResponse = try? JSONDecoder().decode(Items.self, from: data) else {return}
-                    self.realmManafer.delete()
-                    self.realmManafer.save(objects: myResponse.items)
-                    //                    completed(myResponse)
+                    self.realmManager.delete()
+                    self.realmManager.save(objects: myResponse.items)
+                    self.photos = self.realmManager.realm.objects(Title.self)
+                    print(Realm.Configuration.defaultConfiguration.fileURL!)
+                    completed(self.photos)
                 }
             case .failure(_):
                 print("Error")
