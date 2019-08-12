@@ -16,7 +16,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     
     let realmManager = RealmManager.sharedInstance
-    var titleee: String?
+    var name: String?
     var rating: Int?
     var photoObject = Title()
     var selectedImage: String? {
@@ -25,7 +25,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.titleLabel.text = titleee
+        self.titleLabel.text = title
         self.ratingControl.rating = rating!
     }
     

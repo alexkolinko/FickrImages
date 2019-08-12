@@ -41,7 +41,7 @@ class CollectionViewController: UICollectionViewController {
             let title = photoObject.title
             let vc = segue.destination as! ViewController
             vc.selectedImage = imageURL
-            vc.titleee = title
+            vc.title = title
             vc.photoObject = photoObject
             vc.rating = photoObject.rating
         }
